@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+    env_file: ./mysql/.env
+    environment:
+      TZ: Asia/Seoul
+    restart: always
+  bhhan:
+    build:
+      context: ./bhhan-server
+    image: bhhan87/server:${BHHAN_PORTFOLIO_VERSION}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/bhhan?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      SPRING_PROFILES_ACTIVE: dev
+    restart: always
+  frontend:
+    image: bhhan87/frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    restart: always

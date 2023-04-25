@@ -1,0 +1,5 @@
+rootProject.name = 'bhhan-server-renewal'
+include 'bhhan-server'
+include 'storage-api'
+include 'local-storage-service'
+

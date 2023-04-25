@@ -1,0 +1,15 @@
+body {
+  font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+}
+
+.hide-mobile {
+  @media screen and (max-width: $breakpoint-mobile) {
+    display: none;
+  }
+}
+
+.hide-md {
+  @media screen and (max-width: $breakpoint-md) {
+    display: none;
+  }
+}

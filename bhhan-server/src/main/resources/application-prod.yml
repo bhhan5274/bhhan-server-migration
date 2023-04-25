@@ -1,0 +1,18 @@
+logging:
+  level:
+    org:
+      springframeworks:
+        orm:
+          jpa: WARN
+      hibernate:
+        SQL: WARN
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        use_sql_comments: false

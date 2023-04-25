@@ -1,0 +1,21 @@
+apply plugin: "org.springframework.boot"
+
+dependencies {
+    implementation project(":storage-api")
+    implementation project(":local-storage-service")
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-validation:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-cache:$springBootVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-aws:$springCloudAWSVersion"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"
+    implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity5:$thymeleafExtrasVersion"
+    implementation "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+
+    runtimeOnly "mysql:mysql-connector-java:$mysqlConnectorVersion"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+}

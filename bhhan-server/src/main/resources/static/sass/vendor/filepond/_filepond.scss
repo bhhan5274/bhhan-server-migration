@@ -1,0 +1,12 @@
+.filepond--root {
+  margin-bottom: 0 !important;
+  z-index: 0 !important;
+}
+
+.filepond--item {
+  width: calc(20% - .5em);
+
+  @media screen and (max-width: $breakpoint-lg) {
+    width: calc(100% - .5em);
+  }
+}

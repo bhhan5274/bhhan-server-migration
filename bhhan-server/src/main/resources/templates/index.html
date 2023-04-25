@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar Start -->
+        <ul th:replace="fragments.html :: sidebar (currentMenu=${currentMenu})"></ul>
+        <!-- Sidebar End -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar Start -->
+                <nav th:replace="fragments.html :: topbar"></nav>
+                <!-- Topbar End -->
+
+                <!-- Main Start -->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                        </ol>
+                    </div>
+                </div>
+                <!--- Main End -->
+            </div>
+            <!-- Footer Start -->
+            <footer th:replace="fragments.html :: footer"></footer>
+            <!-- Footer End -->
+        </div>
+    </div>
+
+    <!-- Scroll to top -->
+    <a th:replace="fragments.html :: scroll-btn"></a>
+
+    <!-- Script files -->
+    <div th:replace="fragments.html :: script"></div>
+</body>
+</html>

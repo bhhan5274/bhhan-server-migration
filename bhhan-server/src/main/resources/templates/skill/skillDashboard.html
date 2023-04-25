@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments.html :: head"></head>
+<body id="page-top">
+<div id="wrapper">
+    <!-- Sidebar Start -->
+    <ul th:replace="fragments.html :: sidebar (currentMenu=${currentMenu})"></ul>
+    <!-- Sidebar End -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <!-- TopBar Start -->
+            <nav th:replace="fragments.html :: topbar"></nav>
+            <!-- Topbar End -->
+
+            <!-- Main Start -->
+            <div class="container-fluid" id="container-wrapper">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">All Skills</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Skills</li>
+                    </ol>
+                </div>
+                <!-- Application Start -->
+                <div class="row">
+                    <div class="col-lg-12 mb-4">
+                        <!-- Simple Tables -->
+                        <div class="card">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Skill Table</h5>
+                                <button sec:authorize="isAuthenticated()" type="button" class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#addSkillModal" style="padding: 0 !important;">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-plus"></i>
+                                    </span>
+                                    <span class="text">Add Skill</span>
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th class="hide-md">Skill ID</th>
+                                        <th>Name</th>
+                                        <th class="hide-mobile">Use</th>
+                                        <th>Type</th>
+                                        <th sec:authorize="isAuthenticated()">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="skill: ${skills}">
+                                        <td class="hide-md"><h6 class="font-weight-bold" th:text="${skill.id}">ID</h6></td>
+                                        <td class="skill__img"><img th:src="@{${skill.path}}" alt="skill image">&nbsp;<h6 class="hide-md font-weight-bold" style="margin-bottom: 0" th:text="${skill.name}">NAME</h6></td>
+                                        <td class="hide-mobile"><span class="badge badge-primary" th:text="${skill.use}">USE</span></td>
+                                        <td><span class="badge badge-primary" th:text="${skill.type}">TYPE</span></td>
+                                        <td sec:authorize="isAuthenticated()">
+                                            <a href="#" class="btn btn-primary editSkill" data-toggle="modal" data-target="#updateSkillModal" th:attr="data-id=${skill.id}">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-primary deleteSkill" data-toggle="modal" data-target="#deleteSkillModal" th:attr="data-id=${skill.id}">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Application End -->
+            </div>
+            <!--- Main End -->
+        </div>
+        <!-- Footer Start -->
+        <footer th:replace="fragments.html :: footer"></footer>
+        <!-- Footer End -->
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="addSkillModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="mb-0 font-weight-bold text-primary" id="addSkillModalTitle">Add Skill</h5>
+                <button type="button" class="close addClose" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+                        <small class="form-text text-muted form-error" id="nameError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Enter Description">
+                        <small class="form-text text-muted form-error" id="descriptionError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="use">Use</label>
+                        <select class="form-control" id="use" name="use">
+                            <option selected>WORK</option>
+                            <option>TOY</option>
+                            <option>STUDY</option>
+                        </select>
+                        <small class="form-text text-muted form-error" id="useError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select class="form-control" id="type" name="type">
+                            <option selected>APPLICATION</option>
+                            <option>FRONTEND</option>
+                            <option>BACKEND</option>
+                            <option>DEVOPS</option>
+                        </select>
+                        <small class="form-text text-muted form-error" id="typeError"></small>
+                    </div>
+                    <div class="form-group skill__modal">
+                        <label for="file">Images</label>
+                        <input type="file" name="file" id="file">
+                        <small class="form-text text-muted form-error" id="fileError"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary addClose" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addSubmit">Save skill</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateSkillModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="mb-0 font-weight-bold text-primary" id="updateSkillModalTitle">Update Skill</h5>
+                <button type="button" class="close addClose" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="text" id="id" hidden>
+                    <div class="form-group">
+                        <label for="updateName">Name</label>
+                        <input type="text" class="form-control" id="updateName" name="name" placeholder="Enter Name">
+                        <small class="form-text text-muted form-error" id="update-nameError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateDescription">Description</label>
+                        <input type="text" class="form-control" id="updateDescription" name="updateDescription" placeholder="Enter Description">
+                        <small class="form-text text-muted form-error" id="update-descriptionError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateUse">Use</label>
+                        <select class="form-control" id="updateUse" name="use">
+                            <option selected>WORK</option>
+                            <option>TOY</option>
+                            <option>STUDY</option>
+                        </select>
+                        <small class="form-text text-muted form-error" id="update-useError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateType">Type</label>
+                        <select class="form-control" id="updateType" name="type">
+                            <option selected>APPLICATION</option>
+                            <option>FRONTEND</option>
+                            <option>BACKEND</option>
+                            <option>DEVOPS</option>
+                        </select>
+                        <small class="form-text text-muted form-error" id="update-typeError"></small>
+                    </div>
+                    <div class="form-group skill__modal">
+                        <label for="updateFile">Images</label>
+                        <input type="file" name="file" id="updateFile">
+                        <small class="form-text text-muted form-error" id="update-fileError"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary addClose" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="updateSubmit">update skill</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteSkillModal" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="mb-0 font-weight-bold text-primary">Delete Skill</h5>
+                <button type="button" class="close addClose" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the skill?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="deleteSubmit" data-dismiss="modal">delete skill</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll to top -->
+<a th:replace="fragments.html :: scroll-btn"></a>
+
+<!-- Bhhan Toast -->
+<div th:replace="fragments.html :: bhhan-toast"></div>
+
+<!-- Script files -->
+<div th:replace="fragments.html :: script"></div>
+
+<script src="/js/skill/dto/SkillDto.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var basicAuthToken = [[${basicAuthToken}]]
+    /*]]>*/
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var url = '/v1/skills';
+        var redirectUrl = '/skill/board';
+
+        App.SkillDto.SkillFormReq({
+            file: '#file',
+            submit: '#addSubmit',
+            name: '#name',
+            description: '#description',
+            use: '#use',
+            type: '#type',
+            url: url,
+            redirectUrl: redirectUrl,
+            modal: '#addSkillModal',
+            close: '.addClose',
+            prefix: '',
+            basicAuthToken: basicAuthToken
+        });
+        App.SkillDto.SkillFormUpdateReq({
+            file: '#updateFile',
+            submit: '#updateSubmit',
+            name: '#updateName',
+            description: '#updateDescription',
+            use: '#updateUse',
+            type: '#updateType',
+            url: url,
+            redirectUrl: redirectUrl,
+            modal: '#updateSkillModal',
+            close: '.addClose',
+            edit: '.editSkill',
+            prefix: 'update-',
+            basicAuthToken: basicAuthToken
+        });
+        App.SkillDto.SkillFormDeleteReq({
+            submit: "#deleteSubmit",
+            url: url,
+            redirectUrl: redirectUrl,
+            delete: '.deleteSkill',
+            modal: '#deleteSkillModal',
+            basicAuthToken: basicAuthToken
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.bhhan-toast {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  margin: .5rem 1rem 0 0;
+  width: 280px;
+  border-radius: 5px;
+
+  &__header {
+    padding: 1rem;
+  }
+
+  &__body {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    font-size: 2rem;
+    color: $color-primary;
+  }
+  &__text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+}

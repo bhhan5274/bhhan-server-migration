@@ -1,0 +1,16 @@
+.skill__img {
+  display: flex;
+  align-items: center;
+
+  img {
+    display: inline-block;
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}
+
+.skill__modal {
+  .filepond--item {
+    width: calc(100% - .5em) !important;
+  }
+}

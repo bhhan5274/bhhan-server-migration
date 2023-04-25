@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body id="page-top">
+<div id="wrapper">
+    <!-- Sidebar Start -->
+    <ul th:replace="fragments.html :: sidebar (currentMenu=${currentMenu})"></ul>
+    <!-- Sidebar End -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <!-- TopBar Start -->
+            <nav th:replace="fragments.html :: topbar"></nav>
+            <!-- Topbar End -->
+
+            <!-- Main Start -->
+            <div class="container-fluid" id="container-wrapper">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Add Project</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/project/board">Projects</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Project</li>
+                    </ol>
+                </div>
+                <!-- Application Start -->
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h5 class="m-0 font-weight-bold text-primary">Project Form</h5>
+                                <button class="btn btn-primary btn-icon-split" style="padding: 0 !important;" id="submit">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-plus"></i>
+                                    </span>
+                                    <span class="text">Add Project</span>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title">
+                                        <small id="titleError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="skills">Skills</label>
+                                        <select multiple="multiple" class="form-control" id="skills" name="skills">
+                                            <option th:each="skill: ${skills}" th:value="${skill.id}" th:text="${skill.name}">SKILL</option>
+                                        </select>
+                                        <small id="skillsError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="member">Member</label>
+                                        <select class="form-control" id="member" name="member">
+                                            <option selected>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                        <small id="memberError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="summary">Summary</label>
+                                        <textarea class="form-control" id="summary" name="summary" rows="5" placeholder="Enter Summary"></textarea>
+                                        <small id="summaryError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <div id="description"></div>
+                                        <small id="descriptionError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                    <div class="form-row align-items-center">
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="startDate">StartDate</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+                                                </div>
+                                                <input type="text" name="timeRange.startDate" class="form-control" id="startDate" placeholder="Select StartDate">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label for="endDate">EndDate</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+                                                </div>
+                                                <input type="text" name="timeRange.endDate" class="form-control" id="endDate" placeholder="Select EndDate">
+                                            </div>
+                                        </div>
+                                        <small id="timeRangeError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="files">Images</label>
+                                        <input type="file" name="files" id="files" multiple>
+                                        <small id="filesError" class="form-text text-muted form-error"></small>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Application End -->
+            </div>
+            <!--- Main End -->
+        </div>
+        <!-- Footer Start -->
+        <footer th:replace="fragments.html :: footer"></footer>
+        <!-- Footer End -->
+    </div>
+</div>
+
+<!-- Scroll to top -->
+<a th:replace="fragments.html :: scroll-btn"></a>
+
+<!-- Script files -->
+<div th:replace="fragments.html :: script"></div>
+
+<script src="/js/project/dto/ProjectDto.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var basicAuthToken = [[${basicAuthToken}]]
+    /*]]>*/
+
+    $('#description').trumbowyg();
+
+    document.addEventListener('DOMContentLoaded', function(){
+        App.ProjectDto.ProjectAddFormReq({
+            startDate: '#startDate',
+            endDate: '#endDate',
+            files: '#files',
+            submit: '#submit',
+            title: '#title',
+            member: '#member',
+            summary: '#summary',
+            skills: '#skills',
+            url: '/v1/projects',
+            redirectUrl: '/project/board',
+            basicAuthToken: basicAuthToken
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:$dockerComposePluginVersion"
+    }
+}
+
+apply plugin: 'docker-compose'
+
+subprojects {
+    apply plugin: "java"
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+
+        dependencies {
+            compileOnly "org.projectlombok:lombok:$lombokVersion"
+            annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+dockerCompose {
+    removeOrphans = true
+    retainContainersOnStartupFailure = true
+    dockerComposeStopTimeout = java.time.Duration.ofSeconds(1)
+
+    environment.put "BHHAN_PORTFOLIO_VERSION", bhhanPortfolioVersion
+
+    infra {
+        projectName = null
+        useComposeFiles = ["docker-compose.yml"]
+        startedServices = ["mysql"]
+    }
+
+    application {
+        projectName = null
+        useComposeFiles = ["docker-compose.yml"]
+        startedServices = ["bhhan", "frontend"]
+    }
+
+    server {
+        projectName = null
+        useComposeFiles = ["docker-compose.yml"]
+        startedServices = ["bhhan"]
+    }
+}
+
+subprojects.each {
+    if(it.name.startsWith("bhhan")) {
+        applicationComposeUp.dependsOn(":" + it.name + ":assemble")
+    }
+}
+
+applicationComposeUp.dependsOn(infraComposeUp)
+applicationComposeDown.dependsOn(infraComposeDown)
+
+task buildAndPushServerImage(type: GradleBuild) {
+    tasks = ["serverComposeBuild", "serverComposePush"]
+}
+
+task buildAndStartServices(type: GradleBuild) {
+    tasks = ["applicationComposeUp"]
+}
+
+task stopServices(type: GradleBuild) {
+    tasks = ["applicationComposeDown", "removeNoneImage"]
+}
+
+task buildAndTest(type: GradleBuild) {
+    tasks = ["infraComposeUp", "startTest", "infraComposeDown"]
+}
+
+task startTest(type: Exec) {
+    commandLine 'sh', '-c', './gradlew bhhan-server:test'
+}
+
+task removeNoneImage(type: Exec) {
+    commandLine 'sh', '-c', './remove_none_image.sh'
+}

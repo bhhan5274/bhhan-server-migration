@@ -1,0 +1,25 @@
+.login-page {
+  background: linear-gradient(to right, rgba(0, 0, 0, .1), rgba(0, 0, 0, .2));
+}
+
+.login-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.login-box {
+  position: relative;
+  width: 430px;
+  height: 600px;
+  border-radius: 15px;
+  background-color: #fff;
+}
+
+.login-footer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-bottom: 45px;
+  transform: translateX(-50%);
+}

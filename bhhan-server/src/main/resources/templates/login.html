@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box shadow">
+            <div class="login-form">
+                <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-2 font-weight-bold">Login</h1>
+                </div>
+                <form class="user" action="/login" method="post">
+                    <div class="form-group">
+                        <label for="username" class="font-weight-bold">Email</label>
+                        <input type="email" class="form-control" id="username" name="username"
+                               placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="font-weight-bold">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                    </div>
+                    <div class="form-group mt-4">
+                        <input type="submit" value="Login" class="btn btn-primary btn-block"/>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="custom-control custom-switch large">
+                            <input type="checkbox" class="custom-control-input" id="remember-me" name="remember-me">
+                            <label class="custom-control-label font-weight-bold" for="remember-me">Keep me logged in</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="login-footer">
+                <div class="mt-3 text-center">
+                    <span class="small font-weight-normal text-muted">copyright &copy; <script> document.write(new Date().getFullYear()); </script> All Right Reserved</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>
