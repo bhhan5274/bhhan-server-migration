@@ -4,8 +4,8 @@ env:
   variables:
     AWS_DEFAULT_REGION: "ap-northeast-2"
     TERRAFORM_VERSION: "0.15.3"
-    TF_COMMAND: "apply"
-    #TF_COMMAND: "destroy"
+    #TF_COMMAND: "apply"
+    TF_COMMAND: "destroy"
     JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF8"
   parameter-store:
     USERNAME: "/CodeBuild/DOCKER_ID"
